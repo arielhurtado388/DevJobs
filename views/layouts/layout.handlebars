@@ -1,0 +1,47 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/app.css" />
+    <title>{{pagina}}</title>
+  </head>
+  <body>
+
+    <div class="nombre-sitio contenedor">
+      <h1>
+        <a href="/">DevJobs</a>
+      </h1>
+
+      {{#if barra}}
+        <div class="buscador">
+          <form action="#">
+            <input class="buscar" type="text" />
+            <input type="submit" value="Buscar" />
+          </form>
+        </div>
+      {{/if}}
+    </div>
+
+    <header class="site-header contenedor separador">
+      <h2>{{pagina}}</h2>
+      {{#if tagline}}
+        <p class="tagline">{{tagline}}</p>
+      {{/if}}
+
+      {{#if boton}}
+        <a class="btn btn-azul" href="/vacantes/nueva">Publicar nueva vacante</a>
+      {{/if}}
+    </header>
+
+    <div class="contenido-principal contenedor">
+      {{{body}}}
+    </div>
+
+  </body>
+</html>
