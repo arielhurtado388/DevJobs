@@ -36,4 +36,39 @@ const mostrarVacante = async (req, res, next) => {
   });
 };
 
-export { formularioNuevaVacante, agregarVacante, mostrarVacante };
+const formularioEditarVacante = async (req, res, next) => {
+  const vacante = await Vacante.findOne({
+    url: req.params.url,
+  }).lean();
+
+  if (!vacante) return next();
+
+  res.render("editar-vacante", {
+    pagina: `Editar - ${vacante.titulo}`,
+    vacante,
+  });
+};
+
+const editarVacante = async (req, res) => {
+  const vacanteActualizada = req.body;
+  vacanteActualizada.skills = req.body.skills.split(",");
+  const vacante = await Vacante.findOneAndUpdate(
+    {
+      url: req.params.url,
+    },
+    vacanteActualizada,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.redirect(`/vacantes/${vacante.url}`);
+};
+
+export {
+  formularioNuevaVacante,
+  agregarVacante,
+  mostrarVacante,
+  formularioEditarVacante,
+  editarVacante,
+};

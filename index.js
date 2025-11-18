@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { seleccionarSkills } from "./helpers/handlebars.js";
+import { seleccionarSkills, tipoContrato } from "./helpers/handlebars.js";
 
 dotenv.config({ path: ".env" });
 
@@ -22,7 +22,7 @@ app.engine(
   "handlebars",
   engine({
     defaultLayout: "layout",
-    helpers: { seleccionarSkills },
+    helpers: { seleccionarSkills, tipoContrato },
   })
 );
 app.set("view engine", "handlebars");

@@ -32,11 +32,19 @@ function seleccionarSkills(seleccionadas = [], opciones) {
   let html = "";
   skills.forEach((skill) => {
     html += `
-        <li>${skill}</li>
+        <li ${
+          seleccionadas.includes(skill) ? "class='activo'" : ""
+        }>${skill}</li>
     `;
   });
   //   return (opciones.fn().html = html);
   return html;
 }
 
-export { seleccionarSkills };
+function tipoContrato(seleccionado, opciones) {
+  return opciones
+    .fn(this)
+    .replace(new RegExp(`value="${seleccionado}"`), "$& selected='selected'");
+}
+
+export { seleccionarSkills, tipoContrato };
