@@ -7,7 +7,13 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { seleccionarSkills, tipoContrato } from "./helpers/handlebars.js";
+import {
+  mostrarAlertas,
+  seleccionarSkills,
+  tipoContrato,
+} from "./helpers/handlebars.js";
+import expressValidator from "express-validator";
+import flash from "connect-flash";
 
 dotenv.config({ path: ".env" });
 
@@ -17,12 +23,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Usar validacion de campos con express validator
+app.use(expressValidator());
+
 // Habilitar handlebars
 app.engine(
   "handlebars",
   engine({
     defaultLayout: "layout",
-    helpers: { seleccionarSkills, tipoContrato },
+    helpers: { seleccionarSkills, tipoContrato, mostrarAlertas },
   })
 );
 app.set("view engine", "handlebars");
@@ -44,6 +53,15 @@ app.use(
     }),
   })
 );
+
+// Alertas y flash messages
+app.use(flash());
+
+// Crear middleware
+app.use((req, res, next) => {
+  res.locals.mensajes = req.flash();
+  next();
+});
 
 // Routing
 app.use("/", router);

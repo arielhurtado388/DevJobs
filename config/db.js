@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Vacante from "../models/Vacante.js";
+import Usuario from "../models/Usuario.js";
 
 dotenv.config({ path: ".env" });
 

@@ -46,5 +46,20 @@ function tipoContrato(seleccionado, opciones) {
     .fn(this)
     .replace(new RegExp(`value="${seleccionado}"`), "$& selected='selected'");
 }
+function mostrarAlertas(errores = {}, alertas) {
+  const categoria = Object.keys(errores);
 
-export { seleccionarSkills, tipoContrato };
+  let html = "";
+  if (categoria.length) {
+    errores[categoria].forEach((error) => {
+      html += `
+      <div class="${categoria} alerta">
+        ${error}
+      </div>
+    `;
+    });
+    return html;
+  }
+}
+
+export { seleccionarSkills, tipoContrato, mostrarAlertas };
