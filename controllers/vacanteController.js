@@ -21,4 +21,19 @@ const agregarVacante = async (req, res) => {
   res.redirect(`/vacantes/${nuevaVacante.url}`);
 };
 
-export { formularioNuevaVacante, agregarVacante };
+const mostrarVacante = async (req, res, next) => {
+  const { url } = req.params;
+  const vacante = await Vacante.findOne({
+    url,
+  }).lean();
+
+  if (!vacante) return next();
+
+  res.render("vacante", {
+    pagina: vacante.titulo,
+    vacante,
+    barra: true,
+  });
+};
+
+export { formularioNuevaVacante, agregarVacante, mostrarVacante };
