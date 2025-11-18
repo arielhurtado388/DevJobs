@@ -7,16 +7,22 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import { seleccionarSkills } from "./helpers/handlebars.js";
 
 dotenv.config({ path: ".env" });
 
 const app = express();
+
+// Habilitar lectura de datos de formularios
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Habilitar handlebars
 app.engine(
   "handlebars",
   engine({
     defaultLayout: "layout",
+    helpers: { seleccionarSkills },
   })
 );
 app.set("view engine", "handlebars");
