@@ -1,3 +1,6 @@
+import axios from "axios";
+import Swal from "sweetalert2";
+
 document.addEventListener("DOMContentLoaded", () => {
   const skills = document.querySelector(".lista-conocimientos");
 
@@ -12,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cargar las skils de la DB
     skillsSeleccionados();
+  }
+
+  const vacantesListado = document.querySelector(".panel-administracion");
+  if (vacantesListado) {
+    vacantesListado.addEventListener("click", accionesListado);
   }
 });
 
@@ -56,4 +64,44 @@ const limpiarAlertas = () => {
       clearInterval(interval);
     }
   }, 2000);
+};
+
+const accionesListado = (e) => {
+  e.preventDefault();
+  if (e.target.dataset.eliminar) {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminada la vacante, no se puede recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "No, cancelar",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const url = `${location.origin}/vacantes/eliminar/${e.target.dataset.eliminar}`;
+          axios.delete(url).then(function (respuesta) {
+            if (respuesta.status === 200) {
+              Swal.fire({
+                title: "Eliminada",
+                text: respuesta.data,
+                icon: "success",
+              });
+              e.target.parentElement.parentElement.remove();
+            }
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Hubo un error",
+          text: "No se pudo eliminar",
+          icon: "error",
+        });
+      });
+  } else if (e.target.tagName === "A") {
+    window.location.href = e.target.href;
+  }
 };

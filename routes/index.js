@@ -3,6 +3,7 @@ import { mostrarTrabajos } from "../controllers/homeController.js";
 import {
   agregarVacante,
   editarVacante,
+  eliminarVacante,
   formularioEditarVacante,
   formularioNuevaVacante,
   mostrarVacante,
@@ -48,6 +49,9 @@ router.post(
   validarVacante,
   editarVacante
 );
+
+// Eliminar vacantes
+router.delete("/vacantes/eliminar/:id", eliminarVacante);
 
 // Crear cuentas
 router.get("/crear-cuenta", formularioCrearCuenta);
