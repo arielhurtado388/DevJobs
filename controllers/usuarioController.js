@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 const Usuario = mongoose.model("Usuario");
+import multer from "multer";
+import { fileURLToPath } from "url";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import shortid from "shortid";
 
 const formularioCrearCuenta = (req, res) => {
   res.render("crear-cuenta", {
@@ -70,6 +76,7 @@ const formularioEditarPefil = (req, res) => {
     usuario: req.user.toObject(),
     cerrarSesion: true,
     nombre: req.user.nombre,
+    imagen: req.user.imagen,
   });
 };
 
@@ -81,6 +88,10 @@ const editarPerfil = async (req, res) => {
 
   if (req.body.password) {
     usuario.password = req.body.password;
+  }
+
+  if (req.file) {
+    usuario.imagen = req.file.filename;
   }
 
   await usuario.save();
@@ -113,11 +124,54 @@ const validarPerfil = (req, res, next) => {
       usuario: req.user.toObject(),
       cerrarSesion: true,
       nombre: req.user.nombre,
+      imagen: req.user.imagen,
       mensajes: req.flash(),
     });
   }
   next();
 };
+
+const subirImagen = async (req, res, next) => {
+  upload(req, res, function (error) {
+    if (error) {
+      if (error instanceof multer.MulterError) {
+        if (error.code === "LIMIT_FILE_SIZE") {
+          req.flash("error", "El archivo es muy grande, máximo 100kb");
+        } else {
+          req.flash("error", error.message);
+        }
+      } else {
+        req.flash("error", error.message);
+      }
+      res.redirect("/administracion");
+      return;
+    } else {
+      next();
+    }
+  });
+};
+
+const configuracionMulter = {
+  limits: { fileSize: 100000 },
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, __dirname + "../../public/uploads/perfiles");
+    },
+    filename: (req, file, cb) => {
+      const extension = file.mimetype.split("/")[1];
+      cb(null, `${shortid.generate()}.${extension}`);
+    },
+  }),
+  fileFilter(req, file, cb) {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      cb(null, true);
+    } else {
+      cb(new Error("Formato no válido"), false);
+    }
+  },
+};
+
+const upload = multer(configuracionMulter).single("imagen");
 
 export {
   formularioCrearCuenta,
@@ -127,4 +181,5 @@ export {
   formularioEditarPefil,
   editarPerfil,
   validarPerfil,
+  subirImagen,
 };

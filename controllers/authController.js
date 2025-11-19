@@ -28,6 +28,7 @@ const mostrarPanel = async (req, res) => {
     vacantes,
     cerrarSesion: true,
     nombre: req.user.nombre,
+    imagen: req.user.imagen,
   });
 };
 

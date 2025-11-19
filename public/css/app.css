@@ -415,9 +415,15 @@ p.candidatos {
   margin-top: 2rem;
   color: white;
   display: flex;
+  align-items: center;
 }
 .cerrar-sesion img {
-  width: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: 1 / 1;
+  max-height: 40px;
+  margin-right: 2rem;
 }
 .botones {
   display: flex;

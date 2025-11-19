@@ -7,6 +7,7 @@ const formularioNuevaVacante = (req, res) => {
     tagline: "Llena el formulario y publica tu vacante",
     cerrarSesion: true,
     nombre: req.user.nombre,
+    imagen: req.user.imagen,
   });
 };
 
@@ -30,7 +31,9 @@ const mostrarVacante = async (req, res, next) => {
   const { url } = req.params;
   const vacante = await Vacante.findOne({
     url,
-  }).lean();
+  })
+    .populate("autor")
+    .lean();
 
   if (!vacante) return next();
 
@@ -53,6 +56,7 @@ const formularioEditarVacante = async (req, res, next) => {
     vacante,
     cerrarSesion: true,
     nombre: req.user.nombre,
+    imagen: req.user.imagen,
   });
 };
 
@@ -102,6 +106,7 @@ const validarVacante = (req, res, next) => {
       tagline: "Llena el formulario y publica tu vacante",
       cerrarSesion: true,
       nombre: req.user.nombre,
+      imagen: req.user.imagen,
       mensajes: req.flash(),
     });
   }

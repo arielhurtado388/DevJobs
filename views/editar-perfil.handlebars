@@ -1,5 +1,11 @@
 <main class="contenedor">
-  <form action="/editar-perfil" method="POST" class="default-form" novalidate>
+  <form
+    action="/editar-perfil"
+    method="POST"
+    class="default-form"
+    enctype="multipart/form-data"
+    novalidate
+  >
     <div class="campo">
       <label>Nombre</label>
       <input
@@ -23,6 +29,17 @@
     <div class="campo">
       <label>Contraseña</label>
       <input type="password" name="password" placeholder="Tu contraseña" />
+    </div>
+
+    <div class="campo">
+      <label>Imagen</label>
+      <input type="file" name="imagen" />
+
+      <img
+        class="admin-perfil"
+        src="uploads/perfiles/{{usuario.imagen}}"
+        alt="{{usuario.imagen}}"
+      />
     </div>
 
     <div class="campo">

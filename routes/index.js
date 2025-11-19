@@ -15,6 +15,7 @@ import {
   formularioCrearCuenta,
   formularioEditarPefil,
   formularioIniciarSesion,
+  subirImagen,
   validarPerfil,
   validarRegistro,
 } from "../controllers/usuarioController.js";
@@ -67,6 +68,12 @@ router.get("/administracion", verificarUsuario, mostrarPanel);
 
 // Editar perfil
 router.get("/editar-perfil", verificarUsuario, formularioEditarPefil);
-router.post("/editar-perfil", verificarUsuario, validarPerfil, editarPerfil);
+router.post(
+  "/editar-perfil",
+  verificarUsuario,
+  // validarPerfil,
+  subirImagen,
+  editarPerfil
+);
 
 export default router;
