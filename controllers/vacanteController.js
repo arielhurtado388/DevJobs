@@ -5,6 +5,8 @@ const formularioNuevaVacante = (req, res) => {
   res.render("nueva-vacante", {
     pagina: "Nueva vacante",
     tagline: "Llena el formulario y publica tu vacante",
+    cerrarSesion: true,
+    nombre: req.user.nombre,
   });
 };
 
@@ -49,6 +51,8 @@ const formularioEditarVacante = async (req, res, next) => {
   res.render("editar-vacante", {
     pagina: `Editar - ${vacante.titulo}`,
     vacante,
+    cerrarSesion: true,
+    nombre: req.user.nombre,
   });
 };
 
@@ -68,10 +72,48 @@ const editarVacante = async (req, res) => {
   res.redirect(`/vacantes/${vacante.url}`);
 };
 
+// Validar y sanitizar datos de vacantes
+const validarVacante = (req, res, next) => {
+  // Sanitizar
+  req.sanitizeBody("titulo").escape();
+  req.sanitizeBody("empresa").escape();
+  req.sanitizeBody("ubicacion").escape();
+  req.sanitizeBody("salario").escape();
+  req.sanitizeBody("contrato").escape();
+  req.sanitizeBody("skills").escape();
+
+  // Validar
+  req.checkBody("titulo", "El titulo es obligatorio").notEmpty();
+  req.checkBody("empresa", "El nombre de la empresa es obligatoria").notEmpty();
+  req.checkBody("ubicacion", "La ubicación es obligatoria").notEmpty();
+  req.checkBody("contrato", "El tipo de contrato es obligatorio").notEmpty();
+  req.checkBody("skills", "Agrega al menos una habilidad").notEmpty();
+
+  const errores = req.validationErrors();
+
+  if (errores) {
+    req.flash(
+      "error",
+      errores.map((error) => error.msg)
+    );
+
+    return res.render("nueva-vacante", {
+      pagina: "Nueva vacante",
+      tagline: "Llena el formulario y publica tu vacante",
+      cerrarSesion: true,
+      nombre: req.user.nombre,
+      mensajes: req.flash(),
+    });
+  }
+
+  next();
+};
+
 export {
   formularioNuevaVacante,
   agregarVacante,
   mostrarVacante,
   formularioEditarVacante,
   editarVacante,
+  validarVacante,
 };

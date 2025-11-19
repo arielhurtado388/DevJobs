@@ -64,9 +64,67 @@ const formularioIniciarSesion = async (req, res) => {
   });
 };
 
+const formularioEditarPefil = (req, res) => {
+  res.render("editar-perfil", {
+    pagina: "Edita tu perfil en DevJobs",
+    usuario: req.user.toObject(),
+    cerrarSesion: true,
+    nombre: req.user.nombre,
+  });
+};
+
+const editarPerfil = async (req, res) => {
+  const usuario = await Usuario.findById(req.user._id);
+
+  usuario.nombre = req.body.nombre;
+  usuario.email = req.body.email;
+
+  if (req.body.password) {
+    usuario.password = req.body.password;
+  }
+
+  await usuario.save();
+
+  req.flash("correcto", "Cambios guardados correctamente");
+
+  res.redirect("/administracion");
+};
+
+const validarPerfil = (req, res, next) => {
+  req.sanitizeBody("nombre").escape();
+  req.sanitizeBody("email").escape();
+  if (req.body.password) {
+    req.sanitizeBody("password").escape();
+  }
+
+  req.checkBody("nombre", "El nombre es obligatorio").notEmpty();
+  req.checkBody("email", "El correo no es válido").isEmail();
+
+  const errores = req.validationErrors();
+
+  if (errores) {
+    req.flash(
+      "error",
+      errores.map((error) => error.msg)
+    );
+
+    return res.render("editar-perfil", {
+      pagina: "Edita tu perfil en DevJobs",
+      usuario: req.user.toObject(),
+      cerrarSesion: true,
+      nombre: req.user.nombre,
+      mensajes: req.flash(),
+    });
+  }
+  next();
+};
+
 export {
   formularioCrearCuenta,
   validarRegistro,
   crearCuenta,
   formularioIniciarSesion,
+  formularioEditarPefil,
+  editarPerfil,
+  validarPerfil,
 };

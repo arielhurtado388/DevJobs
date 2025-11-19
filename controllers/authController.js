@@ -26,7 +26,19 @@ const mostrarPanel = async (req, res) => {
     pagina: "Panel de administración",
     tagline: "Crea y administra tus vacantes desde aquí",
     vacantes,
+    cerrarSesion: true,
+    nombre: req.user.nombre,
   });
 };
 
-export { autenticarUsuario, mostrarPanel, verificarUsuario };
+const cerrarSesion = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("correcto", "Sesión cerrada correctamente");
+    return res.redirect("/iniciar-sesion");
+  });
+};
+
+export { autenticarUsuario, mostrarPanel, verificarUsuario, cerrarSesion };
