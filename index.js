@@ -14,6 +14,7 @@ import {
 } from "./helpers/handlebars.js";
 import expressValidator from "express-validator";
 import flash from "connect-flash";
+import passport from "./config/passport.js";
 
 dotenv.config({ path: ".env" });
 
@@ -53,6 +54,10 @@ app.use(
     }),
   })
 );
+
+// Inicializar passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Alertas y flash messages
 app.use(flash());

@@ -10,8 +10,10 @@ import {
 import {
   crearCuenta,
   formularioCrearCuenta,
+  formularioIniciarSesion,
   validarRegistro,
 } from "../controllers/usuarioController.js";
+import { autenticarUsuario } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -31,5 +33,9 @@ router.post("/vacantes/editar/:url", editarVacante);
 // Crear cuentas
 router.get("/crear-cuenta", formularioCrearCuenta);
 router.post("/crear-cuenta", validarRegistro, crearCuenta);
+
+// Autenticar
+router.get("/iniciar-sesion", formularioIniciarSesion);
+router.post("/iniciar-sesion", autenticarUsuario);
 
 export default router;

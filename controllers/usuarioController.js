@@ -58,4 +58,15 @@ const crearCuenta = async (req, res, next) => {
   }
 };
 
-export { formularioCrearCuenta, validarRegistro, crearCuenta };
+const formularioIniciarSesion = async (req, res) => {
+  res.render("iniciar-sesion", {
+    pagina: "Inicia sesión en DevJobs",
+  });
+};
+
+export {
+  formularioCrearCuenta,
+  validarRegistro,
+  crearCuenta,
+  formularioIniciarSesion,
+};
