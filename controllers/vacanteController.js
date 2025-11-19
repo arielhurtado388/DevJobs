@@ -9,7 +9,10 @@ const formularioNuevaVacante = (req, res) => {
 };
 
 const agregarVacante = async (req, res) => {
-  const vacante = await Vacante.create(req.body);
+  const vacante = await Vacante(req.body);
+
+  // Autor
+  vacante.autor = req.user._id;
 
   // Crear arreglo a parti de string
   vacante.skills = req.body.skills.split(",");
