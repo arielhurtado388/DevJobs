@@ -15,6 +15,7 @@ import {
 import expressValidator from "express-validator";
 import flash from "connect-flash";
 import passport from "./config/passport.js";
+import createHttpError from "http-errors";
 
 dotenv.config({ path: ".env" });
 
@@ -70,6 +71,20 @@ app.use((req, res, next) => {
 
 // Routing
 app.use("/", router);
+
+// 404
+app.use((req, res, next) => {
+  next(createHttpError(404, "No encontrado"));
+});
+
+// Administracion de errores
+app.use((error, req, res, next) => {
+  res.locals.mensaje = error.message;
+  const status = error.status || 500;
+  res.locals.status = status;
+  res.status(status);
+  res.render("error");
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Servidor en el puerto ${process.env.PORT}`);
