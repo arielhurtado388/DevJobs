@@ -2,11 +2,14 @@ import express from "express";
 import { mostrarTrabajos } from "../controllers/homeController.js";
 import {
   agregarVacante,
+  contactar,
   editarVacante,
   eliminarVacante,
   formularioEditarVacante,
   formularioNuevaVacante,
+  mostrarCandidatos,
   mostrarVacante,
+  subirCV,
   validarVacante,
 } from "../controllers/vacanteController.js";
 import {
@@ -74,6 +77,17 @@ router.post(
   // validarPerfil,
   subirImagen,
   editarPerfil
+);
+
+// Recibir mensajes de candidatos
+router.post("/vacantes/:url", subirCV, contactar);
+
+// Mostrar candidatos por vacante
+router.get(
+  "/candidatos/:id",
+  verificarUsuario,
+
+  mostrarCandidatos
 );
 
 export default router;
