@@ -25,7 +25,11 @@ import {
 import {
   autenticarUsuario,
   cerrarSesion,
+  enviarToken,
+  formularioOlvide,
+  formularioReestablecer,
   mostrarPanel,
+  reestablecer,
   verificarUsuario,
 } from "../controllers/authController.js";
 
@@ -65,6 +69,10 @@ router.post("/crear-cuenta", validarRegistro, crearCuenta);
 router.get("/iniciar-sesion", formularioIniciarSesion);
 router.post("/iniciar-sesion", autenticarUsuario);
 router.get("/cerrar-sesion", verificarUsuario, cerrarSesion);
+router.get("/olvide", formularioOlvide);
+router.post("/olvide", enviarToken);
+router.get("/olvide/:token", formularioReestablecer);
+router.post("/olvide/:token", reestablecer);
 
 // Panel de administracion
 router.get("/administracion", verificarUsuario, mostrarPanel);
