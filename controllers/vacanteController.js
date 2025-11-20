@@ -218,6 +218,20 @@ const mostrarCandidatos = async (req, res) => {
   });
 };
 
+const buscar = async (req, res) => {
+  const vacantes = await Vacante.find({
+    $text: {
+      $search: req.body.q,
+    },
+  }).lean();
+
+  res.render("home", {
+    pagina: `Resultados de la búsqueda: ${req.body.q}`,
+    barra: true,
+    vacantes,
+  });
+};
+
 export {
   formularioNuevaVacante,
   agregarVacante,
@@ -229,4 +243,5 @@ export {
   subirCV,
   contactar,
   mostrarCandidatos,
+  buscar,
 };

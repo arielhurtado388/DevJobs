@@ -2,6 +2,7 @@ import express from "express";
 import { mostrarTrabajos } from "../controllers/homeController.js";
 import {
   agregarVacante,
+  buscar,
   contactar,
   editarVacante,
   eliminarVacante,
@@ -97,5 +98,8 @@ router.get(
 
   mostrarCandidatos
 );
+
+// Buscador de vacantes
+router.post("/buscador", buscar);
 
 export default router;

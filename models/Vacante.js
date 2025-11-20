@@ -57,6 +57,9 @@ vacanteSchema.pre("save", function (next) {
   next();
 });
 
+// Crear un indice
+vacanteSchema.index({ titulo: "text" });
+
 const Vacante = mongoose.model("Vacante", vacanteSchema);
 
 export default Vacante;
